@@ -1,0 +1,64 @@
+https://www.youtube.com/watch?v=toYgBIaUdfM
+
+Just reiterating your explanation to make it better formatted:
+
+Suppose we have [30, 150, 90].
+The total pairs we can form are (30, 150), (90, 30), (90, 150).
+
+Since none of these values are 60, I'm going to do 60 - t % 60 instead of (60 - t % 60) % 60
+
+So when we see 30, we are looking for 60 - 30 % 60 = 30. We haven't seen another 30 yet, so we will not increment cntr (or rather we will, by 0). In our map, we will put 30: 1. What does this means? This means that the remainder 30 is available for use, and the next number that uses it, will be able to create 1 pair with it.
+
+The next number is 150, and we are looking for 60 - 150 % 60 = 30. We see 30 in our map, so we increment cntr by whatever value lives in map[30]. In this case, we increment by map[30] = 1. What this signifies is that we have made a pair between 30 and 150, or in other words, 30 was used to create exactly 1 pair. Now, we will update map[150 % 60] = map[30] by 1, making our map contain 30: 2. What this means is that the next item that requires 30, will be able to make two pairs, one with 30, and one with 150.
+
+Finally, we go to 90, and we are looking for 60 - 90 % 60 = 30. We see map[30] = 2, and so we increment cntr by 2, giving cntr a total value of 3. Why did we do 2? Remember that when map[30] = 2, it means that there is already a pair such that (30, X) are divisible by 60. If you need to use 30 again, then you will be able to create 2 additional pairs. When we see 90, we can now form two pairs: (30, 90) and (90, X). In this case, X is 150.
+
+Let's take this one step further. Assume the last number was 150 again. We are looking for 60 - 150 % 60 = 30. The map now has 30 and a count of 3. What this means is that with remainder 30, we are able to make 3 additional pairs.
+
+In the end, your answer is 6.
+
+
+
+Another ->  Explanation:
+reason for (60 - t % 60) % 60 expression: If the map already has 30, we need to look for the number is having remainder or not, this can be achieved with 60 - t%60. Eg, if the number is 210. 60 - 210 % 60 returns 30. 30 is already in the list this can be paired up to form (30,210).
+
+Reason for an extra % 60 over (60 - t % 60). if the t = 60, the expression 60 - t % 60 returns 60. this is beyond our remainers range (0,59)for 60. to make it with in the range in the case of 60 and multiples of 60, we are ufing an extra %60 on top of (60 - t % 60). this makes the remainder 0. which is with in the range of remainders for 60(0,59)
+
+Explanation for map.put(t % 60, map.getOrDefault(t % 60, 0) + 1);
+every time you visit a new number add first and increment then. Eg: if I have 30,150,90when I read 30 map has 30,1 ... cntr(counter) is 0
+when I read 150, counter increments(30,150) map has 30,2 ... cntr(counter) is 1The map should have 2, reasoningwhen I Read 90,this can form 2 pairs(90,30),90,150.
+This makes the counter will add by 2 ..... cntr = 1+2 == 3
+
+continue thus until completion of array or times :)
+
+Please vote if you like the solution and explanation
+
+class Solution {
+    public int numPairsDivisibleBy60(int[] time) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int cntr = 0;
+        for (int t : time) {
+            cntr += map.getOrDefault((60 - t % 60) % 60, 0);
+            map.put(t % 60, map.getOrDefault(t % 60, 0) + 1);
+        }
+        return cntr;
+    }
+}
+
+
+
+
+Another code -> public int numPairsDivisibleBy60(int[] time) {
+        int[] mod = new int[60];
+        for(int t : time) mod[t%60]++; //count the number of differnt modulation cases of divided by 60. 
+        int res = 0;
+        for(int i = 0; i <= 30; i++){//sum to 30 to avoid double counting
+            if(i == 0 || i == 30) res += (mod[i])*(mod[i]-1)/2; //special case: modulation is 0 or 30. 
+            else res += mod[i] * mod[60-i]; //general case
+        }
+        return res;
+    }
+
+
+
+
