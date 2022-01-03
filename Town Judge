@@ -1,0 +1,27 @@
+Intuition:-
+A basic intuition can be concluded from question is that, if a person is believing someone else than himself than that person is not qualified for being a judge or if a person is trusted by others and has everyone's favour i.e total of N-1 favours, than this person is truly the judge.
+
+Algorithm:-
+
+1.Create an array Trusted of size N+1 to represent the total number of peoples in a town and initialize it with 0 .
+2.After initialization, whenever a person trust someone else than himself, the trusted value of that person should be decreased since that person is not satisfying the two conditions that were mentioned in the question.
+3.Also if a certain x person is trusted by others from town, than this x person value should be increased and those who trusted that x person there values should be decreased.
+4.At last traverse through every person of town and while traversing If a person is found with N-1 trusts than this person should be the judge and return the index of that person .
+
+
+
+JAVA CODE:-
+
+class Solution {
+    public int findJudge(int N, int[][] trust) {
+        int[] Trusted = new int[N+1];
+        for(int[] person : trust){
+            Trusted[person[0]]--;
+            Trusted[person[1]]++;
+        }
+        for(int i = 1;i < Trusted.length;i++){
+            if(Trusted[i] == N-1) return i;
+        }
+        return -1;
+    }
+}
