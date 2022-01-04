@@ -1,0 +1,26 @@
+Two steps :- 1.) set al bits means make all bits to 1 and then substract the the value of n in bits, then you got the complemwnt.
+              2.) then do (Math.pow(2,z) - 1 - n);    means z is the digits in the complement bit, by this we get the final answer
+              
+              
+ Hints
+what is the relationship between input and output
+input + output = 111....11 in binary format
+Is there any corner case?
+0 is a corner case expecting 1, output > input
+Intuition
+Let's find the first number X that X = 1111....1 > N
+And also, it has to be noticed that,
+N = 0 is a corner case expecting1 as result.
+
+
+Solution 1:
+N + bitwiseComplement(N) = 11....11 = X
+Then bitwiseComplement(N) = X - N
+
+Java:
+
+    public int bitwiseComplement(int N) {
+        int X = 1;
+        while (N > X) X = X * 2 + 1;
+        return X - N;
+    }
