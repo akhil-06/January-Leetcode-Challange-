@@ -1,0 +1,27 @@
+We are asked to implement two interfaces in the object, namely the init(head) and getRandom() functions.
+
+The init(head) function would be invoked once when we construct the object. Within which, intuitively we could convert the given linked list into an array for later reuse.
+
+Concerning the getRandom() function, with the linked list converted into an array, we could simply sample from this array.
+
+class Solution {
+
+ArrayList<Integer> arr = new ArrayList<>();
+    public Solution(ListNode head) {
+        while(head != null){
+            arr.add(head.val);
+            head = head.next;
+        }
+    }
+    
+    public int getRandom() {
+        int random = (int)(Math.random()*arr.size());
+        return arr.get(random);
+    }
+}
+
+
+
+
+Reservoir Sampling
+
